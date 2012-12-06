@@ -1,3 +1,7 @@
+if (module && module.exports) {
+	async = require("async");
+}
+
 function ibrick() {};
 
 ibrick.prototype.init = function(conf) {
