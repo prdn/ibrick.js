@@ -1,0 +1,26 @@
+{
+  "name": "ibrick.js",
+  "description": "Simple bootstrap for hook based ",
+  "main": "./index",
+  "author": {
+    "name": "Bdkzero"
+  },
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/bdkzero/ibrick.js.git"
+  },
+  "bugs": {
+    "url": "http://github.com/bdkzero/ibrick.js/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/caolan/async/raw/master/LICENSE"
+    }
+  ],
+  "devDependencies": {
+    "async": ">0.0.0"
+  },
+  "readmeFilename": "README.md"
+}
