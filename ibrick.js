@@ -1,4 +1,11 @@
-if (typeof module !== undefined && module.exports) {
+var isClient = true;
+if (typeof exports !== 'undefined') {
+	if (typeof module !== 'undefined' && module.exports) {
+		isClient = false;
+	}
+}
+
+if (!isClient) {
 	async = require("async");
 }
 
@@ -60,6 +67,6 @@ ibrick.prototype.runHook = function(key, input, output, complete) {
 	});
 };
 
-if (typeof module !== undefined && module.exports) {
+if (!isClient) {
 	module.exports = ibrick;
 }
