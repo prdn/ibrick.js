@@ -1,4 +1,4 @@
-if (module && module.exports) {
+if (typeof module !== undefined && module.exports) {
 	async = require("async");
 }
 
@@ -60,6 +60,6 @@ ibrick.prototype.runHook = function(key, input, output, complete) {
 	});
 };
 
-if (module && module.exports) {
+if (typeof module !== undefined && module.exports) {
 	module.exports = ibrick;
 }
