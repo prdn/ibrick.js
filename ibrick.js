@@ -55,3 +55,7 @@ ibrick.prototype.runHook = function(key, input, output, complete) {
 		complete(err, err ? undefined : output);
 	});
 };
+
+if (module && module.exports) {
+	module.exports = ibrick;
+}
