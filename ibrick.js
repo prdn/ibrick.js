@@ -21,7 +21,7 @@ ibrick.prototype.addHook = function(key, tag, deps, cb) {
 	}
 
 	if (tag === undefined) {
-		tag = 'id-' + Math.random() .replace('.', '')
+		tag = ('id-' + Math.random()).replace('.', '')
 	}	
 
 	var hooks = this._hooks[key];
