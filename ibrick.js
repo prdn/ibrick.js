@@ -68,7 +68,9 @@ ibrick.prototype.runHook = function(key, input, output, complete) {
 	});
 	
 	async.auto(hooks, function(err) {
-		complete(err, err ? undefined : output);
+		if (typeof complete === 'function') {
+			complete(err, err ? undefined : output);
+		}
 	});
 };
 
