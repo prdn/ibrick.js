@@ -4,5 +4,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/prdn/ibrick.js.git"
+  },
+  "dependencies": {
+    "async": "0.2.9"
   }
 }
