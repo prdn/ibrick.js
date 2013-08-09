@@ -2,16 +2,14 @@
   "name": "ibrick.js",
   "description": "Simple bootstrap for hook based ",
   "main": "./index",
-  "author": {
-    "name": "Bdkzero"
-  },
-  "version": "0.0.9",
+  "author": "prdn",
+  "version": "0.0.10",
   "repository": {
     "type": "git",
-    "url": "http://github.com/bdkzero/ibrick.js.git"
+    "url": "http://github.com/prdn/ibrick.js.git"
   },
   "bugs": {
-    "url": "http://github.com/bdkzero/ibrick.js/issues"
+    "url": "http://github.com/prdn/ibrick.js/issues"
   },
   "licenses": [
     {
@@ -22,5 +20,14 @@
   "devDependencies": {
     "async": ">0.0.0"
   },
-  "readmeFilename": "README.md"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bootstrap",
+    "async",
+    "publish/subscribe",
+    "events"
+  ],
+  "license": "MIT"
 }
