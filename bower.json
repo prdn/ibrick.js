@@ -1,0 +1,8 @@
+{
+  "name": "ibrick.js",
+  "version": "0.0.10",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/prdn/ibrick.js.git"
+  }
+}
