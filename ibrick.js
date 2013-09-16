@@ -70,7 +70,7 @@ ibrick.prototype.runHook = function(key, input, output, complete) {
 	_deps.every(function(dep) {
 	    var found = false;
 	    _hooks.every(function(_hook) {
-		if (hook.tag === dep) {
+		if (_hook.tag === dep) {
 		    found = true;
 		    return false;
 		}
