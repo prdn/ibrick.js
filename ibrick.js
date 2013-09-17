@@ -43,14 +43,24 @@ ibrick.prototype.removeHook = function(key, tag) {
     // NOT IMPLEMENTED
 };
 
-ibrick.prototype.runHook = function(key, input, output, complete) {
-    var self = this;
-    
+ibrick.prototype.hasHook = function(key) {
+    if (this._hooks[key]) {
+	return true;
+    }
+    return false;
+};
+
+ibrick.prototype.runHook = function(key, input, output, complete) {    
     if (input === undefined) {
 	input = {};
     }
     if (output === undefined) {
 	output = {};
+    }
+    
+    if (!this.hasHook(key)) {
+	complete(null, output);
+	return;
     }
     
     var _hooks = this._hooks[key] || [];
@@ -64,6 +74,7 @@ ibrick.prototype.runHook = function(key, input, output, complete) {
 	}
     };
     
+    var self = this;
     _hooks.every(function(hook) {
 	var deps = [],
 	    _deps = hook.deps;
