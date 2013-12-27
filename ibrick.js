@@ -6,7 +6,8 @@ if (typeof exports !== 'undefined') {
 }
 
 if (!isClient) {
-    async = require("async");
+    async = require("async"),
+	_ = require("lodash");
 }
 
 function ibrick() {};
