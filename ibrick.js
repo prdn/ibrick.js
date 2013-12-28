@@ -66,9 +66,7 @@ ibrick.prototype._runHook = function(key, input, output, complete) {
 		return;
 	}
 
-	var _hooks = this._hooks[key] || [];
-
-	var hooks = {
+	var queue = {
 		'@data': function(callback) {
 			callback(null, input);
 		},
@@ -76,30 +74,17 @@ ibrick.prototype._runHook = function(key, input, output, complete) {
 			callback(null, output);
 		}
 	};
+	
+	var hooks = this._hooks[key] || [];
 
 	var self = this;
-	_hooks.every(function(hook) {
-		var deps = [],
-		_deps = hook.deps;
-		_deps.every(function(dep) {
-			var found = false;
-			_hooks.every(function(_hook) {
-				if (_hook.tag === dep) {
-					found = true;
-					return false;
-				}
-				return true;
-			});
-			if (found) {
-				deps.push(dep);
-			}
-			return true;
-		});
-		hooks[hook.tag] = ['@data', '@out'].concat(deps).concat([hook.cb]);
+	hooks.every(function(hook) {
+		var deps = hook.deps;
+		queue[hook.tag] = ['@data', '@out'].concat(deps).concat([hook.cb]);
 		return true;
 	});
 
-	async.auto(hooks, function(err) {
+	async.auto(queue, function(err) {
 		if (typeof complete === 'function') {
 			complete(err, err ? undefined : output);
 		}
