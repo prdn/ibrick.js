@@ -66,6 +66,8 @@ ibrick.prototype._runHook = function(key, input, output, complete) {
 		return;
 	}
 
+	var hooks = this.hooks[key] || [];
+
 	var queue = {
 		'@data': function(callback) {
 			callback(null, input);
@@ -74,12 +76,26 @@ ibrick.prototype._runHook = function(key, input, output, complete) {
 			callback(null, output);
 		}
 	};
-	
-	var hooks = this._hooks[key] || [];
 
 	var self = this;
 	hooks.every(function(hook) {
-		var deps = hook.deps;
+		var deps = [],
+		_deps = hook.deps;
+		_deps.every(function(dep) {
+			var found = false;
+			hooks.every(function(_hook) {
+				if (_hook.tag === dep) {
+					found = true;
+					return false;
+				}
+				return true;
+			});
+			if (!found) {
+				throw new Error("ibrick.js: Unmet dependency for hook:" + key + ', dep:' + dep);
+			}
+			deps.push(dep);
+			return true;
+		});
 		queue[hook.tag] = ['@data', '@out'].concat(deps).concat([hook.cb]);
 		return true;
 	});
