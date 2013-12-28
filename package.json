@@ -3,7 +3,7 @@
   "description": "Simple bootstrap for hook based ",
   "main": "./index",
   "author": "prdn",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "repository": {
     "type": "git",
     "url": "http://github.com/prdn/ibrick.js.git"

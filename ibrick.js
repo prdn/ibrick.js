@@ -66,7 +66,7 @@ ibrick.prototype._runHook = function(key, input, output, complete) {
 		return;
 	}
 
-	var hooks = this.hooks[key] || [];
+	var hooks = this._hooks[key] || [];
 
 	var queue = {
 		'@data': function(callback) {
