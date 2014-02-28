@@ -53,14 +53,16 @@ ibrick.prototype.hasHook = function(key) {
 	return false;
 };
 
-ibrick.prototype._runHook = function(key, input, output, complete) {    
+ibrick.prototype._runHook = function(key, env, input, output, complete) {
+	if (env === undefined) {
+		env = {};
+	}
 	if (input === undefined) {
 		input = {};
 	}
 	if (output === undefined) {
 		output = {};
 	}
-
 	if (!this.hasHook(key)) {
 		complete(null, output);
 		return;
@@ -69,6 +71,9 @@ ibrick.prototype._runHook = function(key, input, output, complete) {
 	var hooks = this._hooks[key] || [];
 
 	var queue = {
+		'@env': function(callback) {
+			callback(null, env);
+		},
 		'@data': function(callback) {
 			callback(null, input);
 		},
@@ -91,12 +96,12 @@ ibrick.prototype._runHook = function(key, input, output, complete) {
 				return true;
 			});
 			if (!found) {
-				throw new Error("ibrick.js: Unmet dependency for hook:" + key + ', dep:' + dep);
+				throw new Error("ibrick.js: Unmet dependency for hook:" + key + ", dep:" + dep);
 			}
 			deps.push(dep);
 			return true;
 		});
-		queue[hook.tag] = ['@data', '@out'].concat(deps).concat([hook.cb]);
+		queue[hook.tag] = ['@env', '@data', '@out'].concat(deps).concat([hook.cb]);
 		return true;
 	});
 
@@ -110,34 +115,35 @@ ibrick.prototype._runHook = function(key, input, output, complete) {
 ibrick.prototype.runHook = function() {
 	var args = arguments,
 	key = args[0],
-	data = _.isObject(args[1]) ? args[1] : {},
-	out = _.isObject(args[2]) ? args[2] : {},
-	callback = args[3];
+	env = _.isObject(args[1]) ? args[1] : {},
+	data = _.isObject(args[2]) ? args[2] : {},
+	out = _.isObject(args[3]) ? args[3] : {},
+	callback = args[4];
 
 	var qid;
-	if (data.qid) {
-		qid = data.qid
+	if (env.qid) {
+		qid = env.qid
 		if (_.isArray(this._hqueue[qid])) {
-			this._hqueue[qid].push([key, data, out, callback]);
+			this._hqueue[qid].push([key, env, data, out, callback]);
 			return;
 		}
 		this._hqueue[qid] = [];
 	}
-	delete data.qid;
+	delete env.qid;
 
-	var run = function(key, data, out, callback) {
+	var run = function(key, env, data, out, callback) {
 		var asq = {};
 		if (this.hasHook(key + 'Before')) {
 			asq.pre = function(next) {
-				this._runHook(key + 'Before', data, out, next);
+				this._runHook(key + 'Before', env, data, out, next);
 			}.bind(this);
 		}
 		asq.hook = function(next) {
-			this._runHook(key, data, out, next)
+			this._runHook(key, env, data, out, next)
 		}.bind(this);
 		if (this.hasHook(key + 'After')) {
 			asq.post = function(next) {
-				this._runHook(key + 'After', data, out, next);
+				this._runHook(key + 'After', env, data, out, next);
 			}.bind(this);
 		}
 		async.series(
@@ -161,7 +167,7 @@ ibrick.prototype.runHook = function() {
 		);
 	}.bind(this);
 
-	run(key, data, out, callback);
+	run(key, env, data, out, callback);
 };
 
 if (!isClient) {
